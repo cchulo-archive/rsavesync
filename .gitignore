@@ -1,0 +1,8 @@
+# Build directories
+cmake-build-*
+bin/
+build/
+
+tools/build.log
+tools/sdk/*
+!tools/sdk/.gitkeep
