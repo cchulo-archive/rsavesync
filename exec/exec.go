@@ -9,6 +9,17 @@ import (
 	"log"
 )
 
+func envArrayToMap(envVars []string) map[string]string {
+	envMap := make(map[string]string)
+	for _, env := range envVars {
+		parts := strings.SplitN(env, "=", 2)
+		if len(parts) == 2 {
+			envMap[parts[0]] = parts[1]
+		}
+	}
+	return envMap
+}
+
 func RunCommandWithEnv(cmdString string, logger *log.Logger) error {
 	command := exec.Command("bash", "-c", cmdString)
 
