@@ -35,7 +35,6 @@ func RunCommandWithEnv(cmdString string, logger *log.Logger) error {
 	envString := builder.String()
 	logger.Printf("environment variables:\n%s",envString)
 
-	// set the processes' environment variables
 	command.Env = envVars
 
 	stdout, err := command.StdoutPipe()

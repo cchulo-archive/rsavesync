@@ -12,7 +12,6 @@ import (
 
 func main() {
 	
-	// define CLI flags
 	versionFlag := flag.Bool("version", false, "Print the version number")
 	// debugFlag := flag.Bool("debug", false, "Whether or not a log file is written")
 	// aliasFlag := flag.String("alias", "", "Specify an alias for a non-steam game")
