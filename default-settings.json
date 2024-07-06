@@ -6,11 +6,11 @@
             "saveLocations": [
                 {
                     "name": "retroarch",
-                    "sourceDirectory": "~/.config/retroarch/saves"
+                    "sourceDirectory": "~/.var/app/org.libretro.RetroArch/config/retroarch/saves"
                 },
                 {
                     "name": "wii",
-                    "sourceDirectory": "~/.local/share/dolphin-emu/Wii",
+                    "sourceDirectory": "~/.var/app/org.DolphinEmu.dolphin-emu/data/dolphin-emu/Wii",
                     "include": [
                         "title/00010000/*/data/*",
                         "shared2/menu/FaceLib/*"
