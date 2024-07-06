@@ -1,0 +1,27 @@
+{
+    "games": [
+        {
+            "alias": "test",
+            "saveLocations": [
+                {
+                    "name": "A",
+                    "sourceDirectory": "/path/to/saves/A"
+                },
+                {
+                    "name": "B",
+                    "sourceDirectory": "/paths/to/saves/C"
+                },
+                {
+                    "name": "E",
+                    "sourceDirectory": "/path/to/saves/E",
+                    "include": [
+                        "C/D/*"
+                    ],
+                    "exclude": [
+                        "F"
+                    ]
+                }
+            ]
+        }
+    ]
+}
