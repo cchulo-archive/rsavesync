@@ -5,19 +5,24 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"log"
 )
 
-func envArrayToMap(envVars []string) map[string]string {
-	envMap := make(map[string]string)
-	for _, env := range envVars {
-		parts := strings.SplitN(env, "=", 2)
-		if len(parts) == 2 {
-			envMap[parts[0]] = parts[1]
-		}
+
+func GetEnvVarOrDefault(key string, defaultValue int) int {
+	valueStr := os.Getenv(key)
+	if valueStr == "" {
+		return defaultValue
 	}
-	return envMap
+
+	value, err := strconv.Atoi(valueStr)
+	if err != nil {
+		return defaultValue
+	}
+
+	return value
 }
 
 func RunCommandWithEnv(cmdString string, logger *log.Logger) error {

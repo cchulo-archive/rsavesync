@@ -7,6 +7,7 @@ import (
 	"os"
 	"rsavesync/exec"
 	"rsavesync/logger"
+	"rsavesync/parse"
 	"strings"
 )
 
@@ -14,7 +15,7 @@ func main() {
 	
 	versionFlag := flag.Bool("version", false, "Print the version number")
 	// debugFlag := flag.Bool("debug", false, "Whether or not a log file is written")
-	// aliasFlag := flag.String("alias", "", "Specify an alias for a non-steam game")
+	aliasFlag := flag.String("alias", "", "Specify an alias for a non-steam game")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %s [options] [arguments]\n", os.Args[0])
@@ -47,7 +48,27 @@ func main() {
 	combinedArgs := strings.Join(posArgs, " ")
 
 	if len(posArgs) > 0 {
+		settings, err := parse.LoadSettings("default-settings.json")
+
+		if err != nil {
+			logger.Fatalf("Failed to load settings json: %v", err)
+		}
+
+		steamAppId := exec.GetEnvVarOrDefault("SteamAppId", 0)
+
+		if steamAppId == 0 && *aliasFlag == "" {
+			logger.Fatalf("An alias must be specified if loading a non-steam game")
+		}
+
+		game, err := settings.FindGameByAliasOrID(*aliasFlag, steamAppId)
+		if err != nil {
+			logger.Fatalf("Failed to find entry for alias %s or steamAppId %s: %v", *aliasFlag, steamAppId, err)
+		}
+
+		fmt.Println("Found game: %v", game)
+
 		exec.RunCommandWithEnv(combinedArgs, logger)
+
 	} else {
 		logger.Println("No positional arguments provided")
 	}
