@@ -19,12 +19,12 @@ type Game struct {
 	SaveLocations []SaveLocation `json:"saveLocations"`
 }
 
-type Settings struct {
+type GameSettings struct {
 	Games []Game `json:"games"`
 }
 
-func LoadSettings(filename string) (Settings, error) {
-	var library Settings
+func LoadGameSettings(filename string) (GameSettings, error) {
+	var library GameSettings
 
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -39,11 +39,14 @@ func LoadSettings(filename string) (Settings, error) {
 	return library, nil
 }
 
-func (library *Settings) FindGameByAliasOrID(alias string, steamAppID int) (*Game, error) {
+func (library *GameSettings) FindGameByAliasOrID(alias string, steamAppID int) (*Game, error) {
 	for _, game := range library.Games {
-		if game.Alias == alias || game.SteamAppID == steamAppID {
+		if (steamAppID == 0 && game.Alias == alias) || (alias == "" && game.SteamAppID == steamAppID) {
 			return &game, nil
 		}
 	}
-	return nil, fmt.Errorf("game not found with alias: %s or steamAppID: %d", alias, steamAppID)
+	if steamAppID == 0 {
+		return nil, fmt.Errorf("game not found with alias %s", alias)
+	}
+	return nil, fmt.Errorf("game not found with steamAppID %d", steamAppID)
 }

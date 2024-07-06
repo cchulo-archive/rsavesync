@@ -1,15 +1,13 @@
 package exec
 
 import (
-	"io"
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
-	"strings"
-	"log"
 )
-
 
 func GetEnvVarOrDefault(key string, defaultValue int) int {
 	valueStr := os.Getenv(key)
@@ -28,19 +26,7 @@ func GetEnvVarOrDefault(key string, defaultValue int) int {
 func RunCommandWithEnv(cmdString string, logger *log.Logger) error {
 	command := exec.Command("bash", "-c", cmdString)
 
-	// log environment variables
-	var builder strings.Builder
-	envVars := os.Environ()
-
-	for _, env := range envVars {
-		builder.WriteString(env)
-		builder.WriteString("\n")
-	}
-
-	envString := builder.String()
-	logger.Printf("environment variables:\n%s",envString)
-
-	command.Env = envVars
+	command.Env = os.Environ()
 
 	stdout, err := command.StdoutPipe()
 	if err != nil {
